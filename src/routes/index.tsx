@@ -100,7 +100,7 @@ function Index() {
         batch.forEach((s) => patch(s.index, { status: "prompting" }));
         try {
           const { prompts } = await getPrompts({ data: { bible: b, segments: batch } });
-          batch.forEach((s, i) => patch(s.index, { prompt: prompts[i] }));
+          batch.forEach((s, i) => patch(s.index, { prompt: prompts[i] as string }));
           list = list.map((s) => {
             const at = batch.findIndex((x) => x.index === s.index);
             return at === -1 ? s : { ...s, prompt: prompts[at] as string };
