@@ -28,10 +28,10 @@ export const Route = createFileRoute("/")({
 });
 
 type Shot = Segment & {
-  prompt?: string;
-  url?: string;
+  prompt?: string | undefined;
+  url?: string | undefined;
   status: "waiting" | "prompting" | "drawing" | "done" | "error";
-  error?: string;
+  error?: string | undefined;
 };
 
 const SAMPLE = `(0:00)Henan की कहानी असुरा का उदय. Henan नाम का एक साधारण लड़का था. (0:05)
@@ -45,7 +45,7 @@ async function pool<T>(items: T[], limit: number, fn: (item: T) => Promise<void>
   const workers = Array.from({ length: Math.min(limit, items.length) }, async () => {
     while (i < items.length) {
       const idx = i++;
-      await fn(items[idx]);
+      await fn(items[idx] as T);
     }
   });
   await Promise.all(workers);
@@ -103,7 +103,7 @@ function Index() {
           batch.forEach((s, i) => patch(s.index, { prompt: prompts[i] }));
           list = list.map((s) => {
             const at = batch.findIndex((x) => x.index === s.index);
-            return at === -1 ? s : { ...s, prompt: prompts[at] };
+            return at === -1 ? s : { ...s, prompt: prompts[at] as string };
           });
         } catch (e) {
           const msg = e instanceof Error ? e.message : String(e);
@@ -149,7 +149,7 @@ function Index() {
         let prompt = shot.prompt;
         if (!prompt) {
           const { prompts } = await getPrompts({ data: { bible, segments: [shot] } });
-          prompt = prompts[0];
+          prompt = prompts[0] as string;
           patch(shot.index, { prompt });
         }
         const { url } = await draw({ data: { prompt, seed: 7000 + shot.index } });
