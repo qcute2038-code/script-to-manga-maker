@@ -35,7 +35,7 @@ export async function buildVideo(
 
   const lines: string[] = [];
   for (let i = 0; i < shots.length; i++) {
-    const s = shots[i];
+    const s = shots[i]!;
     const res = await fetch(`/api/proxy-image?url=${encodeURIComponent(s.url)}`);
     const buf = new Uint8Array(await res.arrayBuffer());
     const name = `img${String(i).padStart(5, "0")}.png`;

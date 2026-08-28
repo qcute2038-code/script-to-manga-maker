@@ -31,8 +31,8 @@ export function parseScript(raw: string): Segment[] {
 
   const segments: Segment[] = [];
   for (let i = 0; i < marks.length - 1; i++) {
-    const a = marks[i];
-    const b = marks[i + 1];
+    const a = marks[i]!;
+    const b = marks[i + 1]!;
     const text = raw.slice(a.at + a.len, b.at).replace(/\s+/g, " ").trim();
     let end = b.time;
     if (end <= a.time) end = a.time + 4;
@@ -41,7 +41,7 @@ export function parseScript(raw: string): Segment[] {
   }
 
   // Trailing text after the last timestamp (script may end without a closing mark)
-  const last = marks[marks.length - 1];
+  const last = marks[marks.length - 1]!;
   const tail = raw.slice(last.at + last.len).replace(/\s+/g, " ").trim();
   if (tail) {
     const words = tail.split(" ").length;
