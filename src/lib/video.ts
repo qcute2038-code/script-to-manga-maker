@@ -2,7 +2,9 @@ import type { FFmpeg } from "@ffmpeg/ffmpeg";
 
 export type Shot = { url: string; start: number; end: number };
 
-const CORE = "https://unpkg.com/@ffmpeg/core@0.12.10/dist/umd";
+import wasmAsset from "../assets/ffmpeg-core.wasm.asset.json";
+
+const CORE_JS = "/ffmpeg/ffmpeg-core.esm.js";
 
 let ffmpegPromise: Promise<FFmpeg> | null = null;
 
@@ -14,8 +16,8 @@ async function getFFmpeg(onLog?: (m: string) => void): Promise<FFmpeg> {
       const ff = new FF();
       ff.on("log", ({ message }) => onLog?.(message));
       await ff.load({
-        coreURL: await toBlobURL(`${CORE}/ffmpeg-core.js`, "text/javascript"),
-        wasmURL: await toBlobURL(`${CORE}/ffmpeg-core.wasm`, "application/wasm"),
+        coreURL: await toBlobURL(CORE_JS, "text/javascript"),
+        wasmURL: await toBlobURL(wasmAsset.url, "application/wasm"),
       });
       return ff;
     })();
