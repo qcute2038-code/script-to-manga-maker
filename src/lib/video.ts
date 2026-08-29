@@ -4,7 +4,7 @@ export type Shot = { url: string; start: number; end: number };
 
 import wasmAsset from "../assets/ffmpeg-core.wasm.asset.json";
 
-const CORE_JS = "/ffmpeg/ffmpeg-core.js";
+const CORE_JS = "/ffmpeg/ffmpeg-core.esm.js";
 
 let ffmpegPromise: Promise<FFmpeg> | null = null;
 
